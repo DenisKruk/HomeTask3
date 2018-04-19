@@ -19,11 +19,11 @@ public class Zavod {
         int producedGoods = produceGoods();
         int goodsCount = producedGoods;
 
-        int goodsForFirstShop = getGoodsForShop(1);
+        int goodsForFirstShop = getGoodsForShop(1, goodsCount);
         goodsCount -= goodsForFirstShop;
-        int goodsForSecondShop = getGoodsForShop(2);
+        int goodsForSecondShop = getGoodsForShop(2, goodsCount);
         goodsCount -= goodsForSecondShop;
-        int goodsForThirdShop = getGoodsForShop(3);
+        int goodsForThirdShop = getGoodsForShop(3, goodsCount);
         goodsCount -= goodsForThirdShop;
 
 
@@ -37,51 +37,62 @@ public class Zavod {
     }
 
     private static void printReport(int soldGoods, int earnedMoney) {
-        System.out.println("Завод продал "+soldGoods+" по цене "+earnedMoney+", средняя цена за штуку: "+(double)earnedMoney/soldGoods);
+        System.out.println("Завод продал " + soldGoods + " по цене " + earnedMoney + ", средняя цена за штуку: " + (double) earnedMoney / soldGoods);
     }
 
-    private static int sellGoods(int goodsForFirstShop, int shopNumber) {
-        int result=0;
-        switch (shopNumber){
-            case 1:
-                result=c1;
-                System.out.println("Магазин номер "+shopNumber+" купил "+goodsForFirstShop+" товаров по цене "+c1+" . " +
-                        "\nСредняя цена = "+(double)c1/goodsForFirstShop);
-                break;
-            case 2:
-                result=c2;
-                System.out.println("Магазин номер "+shopNumber+" купил "+k2+" товаров по цене "+c2+" . " +
-                        "\nСредняя цена = "+(double)c2/k2);
-                break;
-            case 3:
-                result=c3;
-                System.out.println("Магазин номер "+shopNumber+" купил "+k3+" товаров по цене "+c3+" . " +
-                        "\nСредняя цена = "+(double)c3/k3);
-                break;
-        }
-        return  result;
-    }
-
-    private static int getGoodsForShop(int shopNumber) {
-        int result=0;
+    private static int sellGoods(int a, int shopNumber) {
+        int result = 0;
         switch (shopNumber) {
             case 1:
-                result = k1;
+                result = c1;
+                System.out.println("Магазин номер " + shopNumber + " купил " + a + " товаров по цене " + ((double) c1 / k1) * a + " . " +
+                        "\nСредняя цена = " + (double) c1 / k1);
                 break;
             case 2:
-                if(k2<produceGoods()-k1){
-                    result = k2;
+                result = c2;
+                System.out.println("Магазин номер " + shopNumber + " купил " + a + " товаров по цене " + ((double) c2 / k2) * a + " . " +
+                        "\nСредняя цена = " + (double) c2 / k2);
+                break;
+            case 3:
+                result = c3;
+                System.out.println("Магазин номер " + shopNumber + " купил " + a + " товаров по цене " + ((double) c3 / k3) * a + " . " +
+                        "\nСредняя цена = " + (double) c3 / k3);
+                break;
+        }
+        return result;
+    }
+
+    private static int getGoodsForShop(int shopNumber, int goodCounts) {
+        int result = 0;
+        switch (shopNumber) {
+            case 1:
+                if (k1 < goodCounts) {
+                    result = k1;
+                } else if (goodCounts <= 0) {
+                    result = 0;
+                    break;
+                } else {
+                    result = goodCounts;
                 }
-                else{
-                    result=produceGoods()-k1;
+                break;
+            case 2:
+                if (k2 < goodCounts) {
+                    result = k2;
+                } else if (goodCounts <= 0) {
+                    result = 0;
+                    break;
+                } else {
+                    result = goodCounts;
                 }
                 break;
             case 3:
-                if(k3<(produceGoods()-k1)-k2){
+                if (k3 < goodCounts) {
                     result = k3;
-                }
-                else {
-                    result = produceGoods()-k1-k2;
+                } else if (goodCounts <= 0) {
+                    result = 0;
+                    break;
+                } else {
+                    result = goodCounts;
                 }
                 break;
         }
@@ -91,7 +102,7 @@ public class Zavod {
 
     private static int produceGoods() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Введите число произведенного товара до "+pMax);
+        System.out.println("Введите число произведенного товара до " + pMax);
         int result;
         try {
             result = scan.nextInt();
@@ -99,8 +110,8 @@ public class Zavod {
             System.out.println(" Вы ввели не числою");
             return produceGoods();
         }
-        if (result>pMax){
-            System.out.println("Число больше "+pMax);
+        if (result > pMax) {
+            System.out.println("Число больше " + pMax);
             return produceGoods();
         }
         System.out.println("Завод выпустил " + result + " продукции");
